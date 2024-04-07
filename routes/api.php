@@ -26,6 +26,10 @@ Route::put('/mariscos/update/{id}', [MariscoController::class, 'update']);
 // Proveedores Administrador
 Route::get('/proveedores/show', [ProveedorController::class, 'index']);
 Route::post('/proveedores/create', [ProveedorController::class, 'store']);
+Route::delete('/proveedores/rm/{id}', [ProveedorController::class, 'destroy']);
+Route::get('/proveedores/getById/{id}', [ProveedorController::class, 'show']);
+Route::put('/proveedores/update/{id}', [ProveedorController::class, 'update']);
+
 
 
 
