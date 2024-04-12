@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('fecha_nacimiento');
             $table->string('telefono');
             $table->string('direccion');
-
+            $table->unsignedBigInteger('categoria_usuario_id');
             $table->rememberToken();
             $table->timestamps();
         });
