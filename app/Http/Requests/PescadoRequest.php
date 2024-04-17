@@ -29,7 +29,6 @@ class PescadoRequest extends FormRequest
             'cantidad' => ['required', 'numeric', 'gt:0'],
             'fechaCompra' => ['required', 'date', 'after_or_equal:today'],
             'categoria' => ['required', 'string', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚ\s]+$/'],
-            'imagen' => ['nullable', 'mimes:jpg,png', 'url'] // Acepta una imagen o una URL
         ];
     }
 }

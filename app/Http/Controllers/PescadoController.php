@@ -24,21 +24,48 @@ class PescadoController extends Controller
      * Metodo que Recibe un Request Personalizado de Pescado
      * Devuelve una Respuesta Json
      */
-    public function store(PescadoRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
-        try{
-            $pescado = Pescado::create($request->all());
+        try {
+            // Verificar si se ha enviado una imagen
+            if ($request->hasFile('imagen')) {
+                // Guardar la imagen en el sistema de archivos y obtener el nombre del archivo
+                $imagenNombre = $request->file('imagen')->store('public/images');
+            } else {
+                $imagenNombre = null;
+            }
+
+            // Convertir precioKG y cantidad a float
+            $precioKG = (float)$request->input('precioKG');
+            $cantidad = (float)$request->input('cantidad');
+
+            // Convertir fechaCompra a tipo date
+            $fechaCompra = date_create($request->input('fechaCompra'));
+
+            // Crear un nuevo pescado con los datos recibidos
+            $pescado = Pescado::create([
+                'nombre' => $request->input('nombre'),
+                'descripcion' => $request->input('descripcion'),
+                'origen' => $request->input('origen'),
+                'precioKG' => $precioKG,
+                'cantidad' => $cantidad,
+                'fechaCompra' => $fechaCompra,
+                'categoria' => $request->input('categoria'),
+                'imagen' => $imagenNombre, // Guardar solo el nombre del archivo de imagen
+                'proveedor_id' => $request->input('proveedor')
+            ]);
+
             return response()->json([
                 'success' => true,
                 'data' => $pescado
             ], Response::HTTP_CREATED);
-        } catch(QueryException $exception){
+        } catch(\Exception $exception) {
             return response()->json([
                 'success' => false,
-                'message' => "Error al crear el pescado. Por favor, intentalo de nuevo."
-            ], Response:: HTTP_INTERNAL_SERVER_ERROR);
+                'message' => "Error al crear el pescado. Por favor, inténtalo de nuevo.",
+                'exception_message' => $exception->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
     }
 
 

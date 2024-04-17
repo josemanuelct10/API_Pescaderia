@@ -41,10 +41,15 @@ Route::get('/categorias-usuarios/check/{id}', [CategoriasUsuarioController::clas
 // Gestion de Usuarios del Administrador
 Route::get('/usuarios/show', [UsuarioController::class, 'getAll']);
 Route::delete('/usuarios/rm/{id}', [UsuarioController::class, 'destroy']);
+Route::get('/usuarios/getById/{id}', [UsuarioController::class, 'getById']);
+Route::put('/usuarios/update/{id}', [UsuarioController::class, 'update']);
 
 // Gestion del Inicio de Sesion
 Route::post('user/create', [InicioSesionController::class, 'store']);
 Route::post('user/login', [InicioSesionController::class, 'login']);
+Route::post('user/logout', [InicioSesionController::class, 'logout']);
+Route::post('user/me', [InicioSesionController::class, 'me']);
+
 
 
 

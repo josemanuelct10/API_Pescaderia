@@ -1,42 +1,68 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Http\Controllers\Controller;
+
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse; // Asegúrate de importar la clase correcta
+use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-
 class InicioSesionController extends Controller
 {
-    public function store(Request $request): JsonResponse{
-        try{
+    public function __construct()
+    {
+        $this->middleware('auth:api')->except(['login', 'store']);
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        try {
             $usuario = User::create($request->all());
             return response()->json([
                 'success' => true,
                 'data' => $usuario
             ], Response::HTTP_CREATED);
-        }catch(QueryException $exception){
+        } catch (QueryException $exception) {
             return response()->json([
                 'success' => false,
                 'message' => "Error al crear el Usuario. Por favor, intentalo de nuevo."
-            ], Response:: HTTP_INTERNAL_SERVER_ERROR);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function login(Request $request)
+    public function me()
     {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            // Aquí puedes realizar acciones adicionales si la autenticación es exitosa
-            return response()->json(['message' => 'Autenticación exitosa', 'user' => $user], 200);
-        }
-
-        return response()->json(['error' => 'Credenciales incorrectas'], 401);
+        return response()->json(auth()->user());
     }
 
+
+    public function login()
+    {
+        $credentials = request(['email', 'password']);
+
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
 }
