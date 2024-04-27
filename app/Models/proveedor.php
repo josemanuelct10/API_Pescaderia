@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 
 class proveedor extends Model
 {
@@ -11,4 +13,15 @@ class proveedor extends Model
     protected $table = 'proveedores';
     use HasFactory;
     protected $fillable = ['nombre', 'direccion', 'telefono', 'categoria', 'cif' ];
+
+
+    // Relación uno a muchos con los pescados (un proveedor puede tener varios pescados)
+    public function pescados(): HasMany{
+        return $this->hasMany(Pescado::class);
+    }
+
+    // Relación uno a muchos con los mariscos (un proveedor puede tener varios mariscos)
+    public function mariscos(): HasMany{
+        return $this->hasMany(Marisco::class);
+    }
 }

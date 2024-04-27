@@ -21,6 +21,7 @@ class InicioSesionController extends Controller
     {
         try {
             $usuario = User::create($request->all());
+            $usuario->load('categoriaUsuario');
             return response()->json([
                 'success' => true,
                 'data' => $usuario
@@ -47,8 +48,14 @@ class InicioSesionController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $user = auth()->user();
+
+        return response()->json([
+            'token' => $token,
+            'user' => $user
+        ]);
     }
+
 
     public function logout()
     {

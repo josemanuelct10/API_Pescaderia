@@ -21,6 +21,8 @@ return new class extends Migration
             $table->date('fechaCompra');
             $table->string('categoria', 50);
             $table->string('imagen')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('proveedor_id');
             $table->timestamps();
         });
     }

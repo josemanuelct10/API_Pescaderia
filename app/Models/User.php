@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -79,5 +80,15 @@ class User extends Authenticatable implements JWTSubject
     // Relación de pertenencia a categoría de usuario (cada usuario pertenece a una categoría de usuario)
     public function categoriaUsuario(): BelongsTo {
         return $this->belongsTo(CategoriaUsuario::class);
+    }
+
+    // Relación uno a muchos con mariscos (un usuario puede tener varios mariscos)
+    public function mariscos(): HasMany {
+        return $this->hasMany(Marisco::class);
+    }
+
+    // Relación uno a muchos con pescados (un usuario puede tener varios pescados)
+    public function pescados(): HasMany {
+        return $this->hasMany(Pescado::class);
     }
 }

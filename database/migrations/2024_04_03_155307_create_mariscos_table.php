@@ -22,6 +22,8 @@ return new class extends Migration
             $table->boolean('cocido');
             $table->date('fechaCompra');
             $table->string('imagen')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('proveedor_id');
             $table->timestamps();
         });
     }

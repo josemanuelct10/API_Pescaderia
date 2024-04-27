@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\MariscoRequest;
 use Illuminate\Http\JsonResponse; // Importa JsonResponse desde Illuminate\Http
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 class MariscoController extends Controller
 {
@@ -14,7 +16,9 @@ class MariscoController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(marisco::all(), 200);
+        $mariscos = Marisco::with('proveedor', 'usuario')->get();
+
+        return response()->json($mariscos);
     }
 
     /**
@@ -22,10 +26,39 @@ class MariscoController extends Controller
     * Metodo que Recibe un Request Personalizado de Marisco
     * Devuelve una Respuesta Json
     */
-    public function store(MariscoRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         try{
-            $marisco = Marisco::create($request->all());
+
+            if ($request->hasFile('imagen')){
+                $imagenNombre = $request->file('imagen')->store('public/images/mariscos');
+            }
+            else{
+                $imagenNombre = null;
+            }
+
+           // Convertir precioKG y cantidad a float
+           $precioKG = (float)$request->input('precioKG');
+           $cantidad = (float)$request->input('cantidad');
+           $user_id = intval($request->input('user_id'));
+           $proveedor_id = intval($request->input('proveedor_id'));
+
+           // Convertir fechaCompra a tipo date
+           $fechaCompra = date_create($request->input('fechaCompra'));
+
+            $marisco = Marisco::create([
+                'nombre' => $request->input('nombre'),
+                'descripcion' => $request->input('descripcion'),
+                'origen' => $request->input('origen'),
+                'precioKG' => $precioKG,
+                'cantidad' => $cantidad,
+                'fechaCompra' => $fechaCompra,
+                'categoria' => $request->input('categoria'),
+                'cocido'=> $request->input('cocido'),
+                'imagen' => $imagenNombre, // Guardar solo el nombre del archivo de imagen
+                'user_id' => $user_id, // Obtener el ID del usuario creador
+                'proveedor_id' => $proveedor_id
+            ]);
             return response()->json([
                 'success' => true,
                 'data' => $marisco
@@ -42,7 +75,12 @@ class MariscoController extends Controller
     {
         try {
             $marisco = Marisco::findOrFail($id);
+            $imagenNombre = $marisco->imagen;
             $marisco->delete();
+
+            if ($imagenNombre){
+                Storage::delete($imagenNombre);
+            }
 
             return response()->json([
                 'success' => true

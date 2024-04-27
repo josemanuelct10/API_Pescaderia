@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PescadoRequest;
 use Illuminate\Http\JsonResponse; // Importa JsonResponse desde Illuminate\Http
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Storage;
+
 
 
 class PescadoController extends Controller
@@ -15,7 +17,9 @@ class PescadoController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(pescado::all(), 200);
+        $pescados = Pescado::with('proveedor', 'usuario')->get();
+
+        return response()->json($pescados);
     }
 
 
@@ -30,7 +34,7 @@ class PescadoController extends Controller
             // Verificar si se ha enviado una imagen
             if ($request->hasFile('imagen')) {
                 // Guardar la imagen en el sistema de archivos y obtener el nombre del archivo
-                $imagenNombre = $request->file('imagen')->store('public/images');
+                $imagenNombre = $request->file('imagen')->store('public/images/pescados');
             } else {
                 $imagenNombre = null;
             }
@@ -38,6 +42,8 @@ class PescadoController extends Controller
             // Convertir precioKG y cantidad a float
             $precioKG = (float)$request->input('precioKG');
             $cantidad = (float)$request->input('cantidad');
+            $user_id = intval($request->input('user_id'));
+            $proveedor_id = intval($request->input('proveedor_id'));
 
             // Convertir fechaCompra a tipo date
             $fechaCompra = date_create($request->input('fechaCompra'));
@@ -51,8 +57,9 @@ class PescadoController extends Controller
                 'cantidad' => $cantidad,
                 'fechaCompra' => $fechaCompra,
                 'categoria' => $request->input('categoria'),
-                'imagen' => $imagenNombre, // Guardar solo el nombre del archivo de imagen
-                'proveedor_id' => $request->input('proveedor')
+                'imagen' => $imagenNombre,
+                'user_id' => $user_id,
+                'proveedor_id' => $proveedor_id
             ]);
 
             return response()->json([
@@ -121,6 +128,14 @@ class PescadoController extends Controller
         try {
             $pescado = Pescado::findOrFail($id);
             $pescado->delete();
+
+            $imagenNombre = $pescado->imagen;
+
+
+            if ($imagenNombre){
+                Storage::delete($imagenNombre);
+            }
+
 
             return response()->json([
                 'success' => true
