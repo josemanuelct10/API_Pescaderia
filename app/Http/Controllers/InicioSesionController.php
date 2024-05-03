@@ -21,7 +21,6 @@ class InicioSesionController extends Controller
     {
         try {
             $usuario = User::create($request->all());
-            $usuario->load('categoriaUsuario');
             return response()->json([
                 'success' => true,
                 'data' => $usuario
@@ -49,6 +48,9 @@ class InicioSesionController extends Controller
         }
 
         $user = auth()->user();
+
+        $user->load('categoriaUsuario');
+
 
         return response()->json([
             'token' => $token,

@@ -8,6 +8,9 @@ use App\Http\Controllers\InicioSesionController;
 use App\Http\Controllers\MariscoController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\GastoController;
+use App\Http\Controllers\VentaController;
+
 
 
 
@@ -43,12 +46,30 @@ Route::get('/usuarios/show', [UsuarioController::class, 'getAll']);
 Route::delete('/usuarios/rm/{id}', [UsuarioController::class, 'destroy']);
 Route::get('/usuarios/getById/{id}', [UsuarioController::class, 'getById']);
 Route::put('/usuarios/update/{id}', [UsuarioController::class, 'update']);
+Route::get('/usuarios/getByCategoria/{id}', [UsuarioController::class, 'getByCategoria']);
+
 
 // Gestion del Inicio de Sesion
 Route::post('user/create', [InicioSesionController::class, 'store']);
 Route::post('user/login', [InicioSesionController::class, 'login']);
 Route::post('user/logout', [InicioSesionController::class, 'logout']);
 Route::post('user/me', [InicioSesionController::class, 'me']);
+
+// Gestion de Gastos del administrador
+Route::get('/gastos/show', [GastoController::class, 'index']);
+Route::post('/gastos/create', [GastoController::class, 'store']);
+Route::delete('/gastos/rm/{id}', [GastoController::class, 'destroy']);
+
+// Devolucion de ficheros PDF
+Route::get('/gastos/{nombreArchivo}', [GastoController::class, 'getNomina']);
+
+
+// Gestion de Ventas del Administrador
+
+Route::get('/ventas/show', [VentaController::class, 'index']);
+Route::post('/ventas/create', [VentaController::class, 'create']);
+Route::delete('/ventas/rm/{id}', [VentaController::class, 'destroy']);
+
 
 
 

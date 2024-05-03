@@ -91,4 +91,9 @@ class User extends Authenticatable implements JWTSubject
     public function pescados(): HasMany {
         return $this->hasMany(Pescado::class);
     }
+
+    // Relacion uno a muchos con gastos (un usuario (trabajador) puede tener uno o muchos gastos)
+    public function gastos(): HasMany {
+        return $this->hasMany(gasto::class);
+    }
 }

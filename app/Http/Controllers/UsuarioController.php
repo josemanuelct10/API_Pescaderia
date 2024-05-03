@@ -12,13 +12,13 @@ class UsuarioController extends Controller
     // Metodo para devolver todos los usuarios
     public function getAll(): JsonResponse{
         // Carga la relación categoriaUsuario junto con los usuarios
-        $usuarios = User::with('categoriaUsuario')->get();
+        $usuarios = User::with('categoriaUsuario', 'gastos')->get();
 
         return response()->json($usuarios);
     }
 
     public function getById(int $id): JsonResponse{
-        $usuario = User::with('categoriaUsuario')->findOrFail($id);
+        $usuario = User::with('categoriaUsuario', 'gastos')->findOrFail($id);
         return response()->json($usuario);
     }
 
@@ -72,5 +72,31 @@ class UsuarioController extends Controller
         }
     }
 
+    public function getByCategoria(int $id): JsonResponse
+    {
+        try {
+            // Realizar la consulta para obtener los usuarios con el ID de categoría dado
+            $usuarios = User::where('categoria_usuario_id', $id)->get();
+
+            // Verificar si se encontraron usuarios
+            if ($usuarios->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No se encontraron usuarios para la categoría con ID: ' . $id,
+                ], 404);
+            }
+
+            // Devolver la respuesta con los usuarios encontrados
+            return response()->json($usuarios, 200);
+
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que pueda ocurrir durante la consulta
+            return response()->json([
+                'success' => false,
+                'id' => $id,
+                'message' => 'Error al obtener los usuarios: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 
 }

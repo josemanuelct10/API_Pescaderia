@@ -24,4 +24,9 @@ class proveedor extends Model
     public function mariscos(): HasMany{
         return $this->hasMany(Marisco::class);
     }
+
+    // Relacion uno a muchos con gastos (un proveedor puede tener uno o muchos gastos)
+    public function gastos(): HasMany {
+        return $this->hasMany(gasto::class);
+    }
 }

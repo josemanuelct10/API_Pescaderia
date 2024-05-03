@@ -14,7 +14,9 @@ class ProveedorController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(Proveedor::all(), 200);
+        $proveedoresConGastos = Proveedor::with('gastos')->get();
+
+        return response()->json($proveedoresConGastos, 200);
     }
 
     /**
@@ -45,8 +47,8 @@ class ProveedorController extends Controller
 
      public function show(int $id): JsonResponse
      {
-         $proveedor = Proveedor::find($id);
-         return response()->json($proveedor);
+        $proveedor = Proveedor::with('gastos')->find($id);
+        return response()->json($proveedor);
      }
 
 
