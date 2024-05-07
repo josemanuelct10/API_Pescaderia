@@ -17,7 +17,7 @@ class PescadoController extends Controller
      */
     public function index(): JsonResponse
     {
-        $pescados = Pescado::with('proveedor', 'usuario')->get();
+        $pescados = Pescado::with('proveedor', 'user')->get();
 
         return response()->json($pescados);
     }

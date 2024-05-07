@@ -16,7 +16,7 @@ class MariscoController extends Controller
      */
     public function index(): JsonResponse
     {
-        $mariscos = Marisco::with('proveedor', 'usuario')->get();
+        $mariscos = Marisco::with('proveedor', 'user')->get();
 
         return response()->json($mariscos);
     }

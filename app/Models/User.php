@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -92,8 +93,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Pescado::class);
     }
 
-    // Relacion uno a muchos con gastos (un usuario (trabajador) puede tener uno o muchos gastos)
+    // Relacion uno a muchos con gastos (un usuario puede tener uno o muchos gastos)
     public function gastos(): HasMany {
         return $this->hasMany(gasto::class);
+    }
+
+    // Relacion uno a muchos con facturas (un usuario puede tener una o muchas facturas)
+    public function facturas(): HasMany {
+        return $this->hasMany(factura::class);
     }
 }

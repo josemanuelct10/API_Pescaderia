@@ -18,7 +18,7 @@ class gasto extends Model
         }
 
         // Relación de pertenencia a usuario (cada pescado pertenece a un usuario)
-        public function usuario(): BelongsTo {
+        public function user(): BelongsTo {
             return $this->belongsTo(User::class);
         }
 

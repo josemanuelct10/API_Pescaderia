@@ -10,8 +10,8 @@ use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\GastoController;
 use App\Http\Controllers\VentaController;
-
-
+use App\Http\Controllers\FacturaController;
+use App\Http\Controllers\LineaController;
 
 
 // Pescado Adminstrador
@@ -61,7 +61,7 @@ Route::post('/gastos/create', [GastoController::class, 'store']);
 Route::delete('/gastos/rm/{id}', [GastoController::class, 'destroy']);
 
 // Devolucion de ficheros PDF
-Route::get('/gastos/{nombreArchivo}', [GastoController::class, 'getNomina']);
+Route::get('/gastos/document/{nombreArchivo}', [GastoController::class, 'getNomina']);
 
 
 // Gestion de Ventas del Administrador
@@ -72,5 +72,8 @@ Route::delete('/ventas/rm/{id}', [VentaController::class, 'destroy']);
 
 
 
-
-
+// Gestion de Facturas
+Route::get('/facturas/show', [FacturaController::class, 'index']);
+Route::post('/facturas/create', [FacturaController::class, 'create']);
+Route::post('/facturas/linea/create', [LineaController::class, 'create']);
+Route::get('/facturas/{id}/pdf', [FacturaController::class, 'generarPDF']);

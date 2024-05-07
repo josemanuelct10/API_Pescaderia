@@ -17,8 +17,15 @@ class pescado extends Model
     }
 
     // Relación de pertenencia a usuario (cada pescado pertenece a un usuario)
-    public function usuario(): BelongsTo {
+    public function user(): BelongsTo {
         return $this->belongsTo(User::class);
     }
+
+    // Relación uno a muchos con las líneas de factura (cada pescado puede estar en varias líneas de factura)
+    public function lineas(): HasMany {
+        return $this->hasMany(Linea::class);
+    }
+
+
 
 }

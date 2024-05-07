@@ -18,7 +18,7 @@ class GastoController extends Controller
      */
     public function index(): JsonResponse
     {
-        $gastos = gasto::with('usuario')->get();
+        $gastos = gasto::with('proveedor','user')->get();
 
         return response()->json($gastos);
     }
@@ -46,7 +46,7 @@ class GastoController extends Controller
                 'referencia'=> $request->input('referencia'),
                 'cantidad' => $request->input('cantidad'),
                 'fecha' => $request->input('fecha'),
-                'user_id' => $request->input('trabajador_id'),
+                'user_id' => $request->input('user_id'),
                 'proveedor_id' => $request->input('proveedor_id'),
                 'documento' => $rutaArchivo
             ]);
@@ -65,28 +65,10 @@ class GastoController extends Controller
         }
     }
 
-    public function getNomina($nombreArchivo)
+    public function getNomina(string $nombreArchivo)
     {
-        $rutaArchivo = 'public/documents/nominas/' . $nombreArchivo;
-
-
-
-        // Verificar si el archivo existe
-        if (Storage::disk('public')->exists($rutaArchivo)) {
-            // Obtener el tipo de contenido del archivo (en este caso, PDF)
-
-            $tipoContenido = 'application/pdf';
-
-
-            return response()->file(storage_path('app/' . $rutaArchivo), ['Content-Type' => $tipoContenido]);
-
-            // Devolver el archivo como una respuesta HTTP
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => "Error al recuperar el documento. Por favor, inténtalo de nuevo.",
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        $rutaArchivo = 'documents/' . $nombreArchivo;
+        return response()->file(storage_path('app/public/' . $rutaArchivo));
     }
 
     public function destroy(int $id): JsonResponse

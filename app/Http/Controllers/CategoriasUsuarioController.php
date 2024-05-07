@@ -17,7 +17,11 @@ class CategoriasUsuarioController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(categoriaUsuario::all(), 200);
+        // Cargar la relación 'users' junto con todas las categorías de usuario
+        $categoriasConUsuarios = categoriaUsuario::with('users')->get();
+
+        // Devolver la respuesta JSON con todas las categorías de usuario y sus usuarios relacionados
+        return response()->json($categoriasConUsuarios, 200);
     }
 
         /**

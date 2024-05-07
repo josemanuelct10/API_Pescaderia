@@ -45,7 +45,8 @@ class VentaController extends Controller
         } catch(QueryException $exception) {
             return response()->json([
                 'success' => false,
-                'message' => "Error al crear la categoría. Por favor, inténtalo de nuevo."
+                'response' => -1,
+                'message' => "Error al crear la venta. Por favor, inténtalo de nuevo."
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
