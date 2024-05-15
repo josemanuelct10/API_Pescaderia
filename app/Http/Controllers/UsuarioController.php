@@ -18,7 +18,7 @@ class UsuarioController extends Controller
     }
 
     public function getById(int $id): JsonResponse{
-        $usuario = User::with('categoriaUsuario', 'gastos')->findOrFail($id);
+        $usuario = User::with('categoriaUsuario', 'gastos', 'facturas')->findOrFail($id);
         return response()->json($usuario);
     }
 

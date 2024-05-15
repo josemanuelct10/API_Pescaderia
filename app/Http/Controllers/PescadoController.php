@@ -34,7 +34,8 @@ class PescadoController extends Controller
             // Verificar si se ha enviado una imagen
             if ($request->hasFile('imagen')) {
                 // Guardar la imagen en el sistema de archivos y obtener el nombre del archivo
-                $imagenNombre = $request->file('imagen')->store('public/images/pescados');
+                $ruta = $request->file('imagen')->store('public/images');
+                $imagenNombre = basename($ruta);
             } else {
                 $imagenNombre = null;
             }
@@ -83,7 +84,7 @@ class PescadoController extends Controller
 
     public function show(int $id): JsonResponse
     {
-        $pescado = Pescado::find($id);
+        $pescado = Pescado::with('proveedor')->find($id);
         return response()->json($pescado, 200);
     }
 
@@ -149,6 +150,27 @@ class PescadoController extends Controller
             return response()->json([
                 'success' => false,
                 'error' => 'Se produjo un error al intentar eliminar el pescado.'
+            ], 500);
+        }
+    }
+
+    public function updateCantidad(Request $request, $id)
+    {
+        try {
+            $pescado = Pescado::findOrFail($id);
+            $pescado->cantidad = $request->input('cantidad');
+            $pescado->save();
+
+            return response()->json([
+                'success' => true,
+                'response' => 1,
+                'message' => "Cantidad de pescado actualizada correctamente"
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'response' => 0,
+                'message' => "Error al actualizar la cantidad de pescado"
             ], 500);
         }
     }

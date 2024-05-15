@@ -78,4 +78,30 @@ class FacturaController extends Controller
                 ->header('Content-Type', 'application/pdf')
                 ->header('Content-Disposition', 'inline; filename="factura.pdf"');
     }
+
+    function delete(int $id){
+        try{
+
+            $factura = Factura::findOrFail($id);
+
+            // Eliminar todas las líneas asociadas a la factura
+            $factura->lineas()->delete();
+
+            // Eliminar la factura
+            $factura->delete();
+
+
+            return response()->json([
+                'success' => true,
+                'response' => 1
+            ], 200);
+
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'response' => 0,
+                'message' => "Error al eliminar la factura. Por favor, inténtalo de nuevo."
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

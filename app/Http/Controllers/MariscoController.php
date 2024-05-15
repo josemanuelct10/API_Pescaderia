@@ -30,10 +30,11 @@ class MariscoController extends Controller
     {
         try{
 
-            if ($request->hasFile('imagen')){
-                $imagenNombre = $request->file('imagen')->store('public/images/mariscos');
-            }
-            else{
+            if ($request->hasFile('imagen')) {
+                // Guardar la imagen en el sistema de archivos y obtener el nombre del archivo
+                $ruta = $request->file('imagen')->store('public/images');
+                $imagenNombre = basename($ruta);
+            } else {
                 $imagenNombre = null;
             }
 
@@ -105,7 +106,7 @@ class MariscoController extends Controller
 
      public function show(int $id): JsonResponse
      {
-         $marisco = Marisco::find($id);
+         $marisco = Marisco::with('proveedor')->find($id);
          return response()->json($marisco, 200);
      }
 
@@ -139,6 +140,27 @@ class MariscoController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error al actualizar el marisco: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function updateCantidad(Request $request, $id)
+    {
+        try {
+            $marisco = Marisco::findOrFail($id);
+            $marisco->cantidad = $request->input('cantidad');
+            $marisco->save();
+
+            return response()->json([
+                'success' => true,
+                'response' => 1,
+                'message' => "Cantidad de marisco actualizada correctamente"
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'response' => 0,
+                'message' => "Error al actualizar la cantidad de marisco"
             ], 500);
         }
     }

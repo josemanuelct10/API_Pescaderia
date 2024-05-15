@@ -12,6 +12,8 @@ use App\Http\Controllers\GastoController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\LineaController;
+use App\Http\Controllers\CarritoController;
+
 
 
 // Pescado Adminstrador
@@ -20,6 +22,7 @@ Route::post('/pescados/create', [PescadoController::class, 'store']);
 Route::delete('/pescados/rm/{id}', [PescadoController::class, 'destroy']);
 Route::get('/pescados/getById/{id}', [PescadoController::class, 'show']);
 Route::put('/pescados/update/{id}', [PescadoController::class, 'update']);
+Route::put('/pescados/updateCantidad/{id}', [PescadoController::class, 'updateCantidad']);
 
 // Marisco Administrador
 Route::get('/mariscos/show', [MariscoController::class, "index"]);
@@ -27,6 +30,8 @@ Route::post('/mariscos/create', [MariscoController::class, "store"]);
 Route::delete('/mariscos/rm/{id}', [MariscoController::class, 'destroy']);
 Route::get('/mariscos/getById/{id}', [MariscoController::class, 'show']);
 Route::put('/mariscos/update/{id}', [MariscoController::class, 'update']);
+Route::put('/mariscos/updateCantidad/{id}', [MariscoController::class, 'updateCantidad']);
+
 
 // Proveedores Administrador
 Route::get('/proveedores/show', [ProveedorController::class, 'index']);
@@ -53,7 +58,9 @@ Route::get('/usuarios/getByCategoria/{id}', [UsuarioController::class, 'getByCat
 Route::post('user/create', [InicioSesionController::class, 'store']);
 Route::post('user/login', [InicioSesionController::class, 'login']);
 Route::post('user/logout', [InicioSesionController::class, 'logout']);
-Route::post('user/me', [InicioSesionController::class, 'me']);
+Route::get('user/me', [InicioSesionController::class, 'me']);
+Route::put('user/update', [InicioSesionController::class, 'updateProfile']);
+Route::put('/user/updatePwd', [InicioSesionController::class, 'updatePwd']);
 
 // Gestion de Gastos del administrador
 Route::get('/gastos/show', [GastoController::class, 'index']);
@@ -65,7 +72,6 @@ Route::get('/gastos/document/{nombreArchivo}', [GastoController::class, 'getNomi
 
 
 // Gestion de Ventas del Administrador
-
 Route::get('/ventas/show', [VentaController::class, 'index']);
 Route::post('/ventas/create', [VentaController::class, 'create']);
 Route::delete('/ventas/rm/{id}', [VentaController::class, 'destroy']);
@@ -77,3 +83,15 @@ Route::get('/facturas/show', [FacturaController::class, 'index']);
 Route::post('/facturas/create', [FacturaController::class, 'create']);
 Route::post('/facturas/linea/create', [LineaController::class, 'create']);
 Route::get('/facturas/{id}/pdf', [FacturaController::class, 'generarPDF']);
+Route::delete('/facturas/rm/{id}', [FacturaController::class, 'delete']);
+
+// Carrito
+Route::get('/carrito/comprobar/{id}', [CarritoController::class, 'exits']);
+Route::post('/carrito/create', [CarritoController::class, 'createCarrito']);
+Route::post('/carrito/newProducto', [LineaController::class, 'create']);
+Route::delete('/carrito/deleteProducto/{id}', [LineaController::class, 'delete']);
+Route::put('/carrito/actualizarLinea/{id}', [LineaController::class, 'update']);
+Route::delete('/carrito/deleteCarrito/{id}', [CarritoController::class, 'deleteCarrito']);
+
+
+

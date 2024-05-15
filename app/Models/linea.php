@@ -18,7 +18,8 @@ class linea extends Model
         'preparacion',
         'factura_id',
         'pescado_id',
-        'marisco_id'
+        'marisco_id',
+        'carrito_id'
         ];
 
     // Relación de pertenencia a factura (cada línea pertenece a una factura)
@@ -36,6 +37,13 @@ class linea extends Model
     public function marisco(): BelongsTo{
         return $this->belongsTo(Marisco::class);
     }
+
+    // Relación de pertenencia a factura (cada línea pertenece a una factura)
+    public function carrito(): BelongsTo
+    {
+        return $this->belongsTo(Carrito::class);
+    }
+
 
 
 }

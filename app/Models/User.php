@@ -9,6 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -101,5 +103,11 @@ class User extends Authenticatable implements JWTSubject
     // Relacion uno a muchos con facturas (un usuario puede tener una o muchas facturas)
     public function facturas(): HasMany {
         return $this->hasMany(factura::class);
+    }
+
+    // Un usuario solo puede tener un solo unico carrito
+    public function carrito(): HasOne
+    {
+        return $this->hasOne(Carrito::class);
     }
 }
