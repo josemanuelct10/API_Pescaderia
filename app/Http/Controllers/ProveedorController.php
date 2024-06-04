@@ -25,6 +25,7 @@ class ProveedorController extends Controller
 
 
     /**
+<<<<<<< HEAD
      * Almacena un nuevo proveedor en la base de datos.
      *
      * @param  \Illuminate\Http\Request  $request  La solicitud HTTP que contiene los datos del proveedor a almacenar.
@@ -39,10 +40,24 @@ class ProveedorController extends Controller
         // Verificar si ya existe un proveedor con el mismo CIF
         $existingProveedorWithCif = Proveedor::where('cif', $cif)->first();
         if ($existingProveedorWithCif) {
+=======
+     * Método que crea un nuevo proveedor
+     * Recibe un Request  para crear el proveedor
+     * Devuelve una respuesta JSON
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $cif = $request->input('cif');
+
+        // Verificar si ya existe un proveedor con el mismo CIF
+        $existingProveedor = Proveedor::where('cif', $cif)->first();
+        if ($existingProveedor) {
+>>>>>>> fc07636710d5b85df05b9aa2842a51434e8b577f
             return response()->json([
                 'response' => -1,
                 'success' => false,
                 'message' => 'Ya existe un proveedor con este CIF.'
+<<<<<<< HEAD
             ], Response::HTTP_CREATED);
         }
 
@@ -58,6 +73,13 @@ class ProveedorController extends Controller
 
         try {
             // Crear el proveedor si no existe ninguno con el mismo CIF o teléfono
+=======
+            ], 201);
+        }
+
+        try {
+            // Crear el proveedor si no existe
+>>>>>>> fc07636710d5b85df05b9aa2842a51434e8b577f
             $proveedor = Proveedor::create($request->all());
             return response()->json([
                 'response' => 1,
@@ -70,7 +92,7 @@ class ProveedorController extends Controller
                 'response' => 0,
                 'success' => false,
                 'message' => "Error al crear el proveedor. Por favor, inténtalo de nuevo."
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            ], Response:: HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
