@@ -89,8 +89,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Descripcion</th>
+                        <th>Producto</th>
+                        <th>Preparación
                         <th>Precio por kg</th>
                         <th>Cantidad</th>
                         <th>Total</th>
@@ -98,13 +98,22 @@
                 </thead>
                 <tbody>
                     @foreach ($factura->lineas as $linea)
-                        <tr>
-                            <td>{{ $linea->id }}</td>
-                            <td>{{ $linea->descripcion }}</td>
-                            <td class="price">{{ number_format($linea->cantidad, 2) }} KG</td>
-                            <td class="price">{{ number_format($linea->precioUnitario, 2) }} €</td>
-                            <td class="price">{{ number_format($linea->precioLinea, 2) }} €</td>
-                        </tr>
+                    <tr>
+                        <td>
+                            @if ($linea->pescado)
+                                {{ $linea->pescado->nombre }}
+                            @elseif ($linea->marisco)
+                                {{ $linea->marisco->nombre }}
+                            @else
+                                Sin información
+                            @endif
+                        </td>
+                        <td>{{ $linea->descripcion}}</td>
+                        <td class="price">{{ number_format($linea->cantidad, 2) }} KG</td>
+                        <td class="price">{{ number_format($linea->precioUnitario, 2) }} €</td>
+                        <td class="price">{{ number_format($linea->precioLinea, 2) }} €</td>
+                    </tr>
+
                     @endforeach
                 </tbody>
             </table>

@@ -17,12 +17,14 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('dni')->unique();
+            $table->string('dni', 9)->unique();
             $table->date('fecha_nacimiento');
-            $table->string('telefono');
+            $table->string('telefono', 9)->unique();
             $table->string('direccion');
             $table->unsignedBigInteger('categoria_usuario_id');
             $table->rememberToken();
+            $table->string('reset_password_token')->nullable();
+            $table->timestamp('reset_password_token_expires_at')->nullable();
             $table->timestamps();
         });
 

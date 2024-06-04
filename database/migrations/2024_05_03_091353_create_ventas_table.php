@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('descripcion', 100);
             $table->date('fecha');
-            $table->string('referencia', 150);
+            $table->string('referencia', 150)->unique();
             $table->float('cantidad');
             $table->timestamps();
         });

@@ -31,7 +31,9 @@ class User extends Authenticatable implements JWTSubject
         'fecha_nacimiento',
         'telefono',
         'direccion',
-        'categoria_usuario_id'
+        'categoria_usuario_id',
+        'reset_password_token',
+        'reset_password_token_expires_at',
     ];
 
     /**
@@ -82,7 +84,7 @@ class User extends Authenticatable implements JWTSubject
 
     // Relación de pertenencia a categoría de usuario (cada usuario pertenece a una categoría de usuario)
     public function categoriaUsuario(): BelongsTo {
-        return $this->belongsTo(CategoriaUsuario::class);
+        return $this->belongsTo(categoriaUsuario::class);
     }
 
     // Relación uno a muchos con mariscos (un usuario puede tener varios mariscos)

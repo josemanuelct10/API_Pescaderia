@@ -21,7 +21,7 @@ class factura extends Model
 
     // Relación uno a muchos con las líneas de factura (cada factura puede tener varias líneas)
     public function lineas(): HasMany {
-        return $this->hasMany(Linea::class);
+        return $this->hasMany(linea::class);
     }
 
 }

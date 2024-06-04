@@ -10,6 +10,8 @@ class categoriaUsuario extends Model
 {
 
     protected $guarded = [];
+    protected $fillable = ['descripcion'];
+
 
     use HasFactory;
 

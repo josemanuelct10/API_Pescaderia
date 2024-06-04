@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('referencia', 100);
             $table->string('descripcion', 200);
             $table->float('cantidad');
-            $table->string('documento');
+            $table->string('documento')->nullable();
             $table->date('fecha');
             $table->unsignedBigInteger('proveedor_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();

@@ -22,7 +22,7 @@ class linea extends Model
         'carrito_id'
         ];
 
-    // Relación de pertenencia a factura (cada línea pertenece a una factura)
+    // Relación de pertenencia a factura (cada línea pertenece a una factura o a un carrito)
     public function factura(): BelongsTo
     {
         return $this->belongsTo(Factura::class);
@@ -38,10 +38,10 @@ class linea extends Model
         return $this->belongsTo(Marisco::class);
     }
 
-    // Relación de pertenencia a factura (cada línea pertenece a una factura)
+    // Relación de pertenencia a carrito (cada línea pertenece a una carrito o a una factura)
     public function carrito(): BelongsTo
     {
-        return $this->belongsTo(Carrito::class);
+        return $this->belongsTo(carrito::class);
     }
 
 

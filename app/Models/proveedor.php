@@ -27,6 +27,6 @@ class proveedor extends Model
 
     // Relacion uno a muchos con gastos (un proveedor puede tener uno o muchos gastos)
     public function gastos(): HasMany {
-        return $this->hasMany(Gasto::class);
+        return $this->hasMany(gasto::class);
     }
 }
