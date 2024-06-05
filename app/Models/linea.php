@@ -15,7 +15,6 @@ class linea extends Model
         'cantidad',
         'precioLinea',
         'precioUnitario',
-        'preparacion',
         'factura_id',
         'pescado_id',
         'marisco_id',
